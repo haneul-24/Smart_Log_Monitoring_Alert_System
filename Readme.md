@@ -237,5 +237,8 @@ Cron jobs can be configured to:
 ## License
 This project is licensed under the **MIT License**.
 
+© 2026 Sejal. All rights reserved.
+
+
 ## Author 
 **Sejal**
