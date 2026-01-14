@@ -15,9 +15,13 @@ setup_logging()
 
 
 load_dotenv()
+try :
+    url = os.getenv("URL")
+    client = MongoClient(url, tls=True,tlsCAFile=certifi.where(),serverSelectionTimeoutMS=30000,connect=True)
+    client.server_info()
+except Exception as e :
+    print(f"MonogDB not ready: {e}")
 
-url = os.getenv("URL")
-client = MongoClient(url, tls=True,tlsCAFile=certifi.where(),serverSelectionTimeoutMS=30000,connect=True)
 db = client["smart_logs"]
 collection = db["logs"]
 

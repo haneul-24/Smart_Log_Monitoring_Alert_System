@@ -1,0 +1,58 @@
+
+
+services:
+  fastapi:
+    build: .
+    container_name: 'smart_log_fastapi'
+    command: uvicorn python_API:app 
+    env_file:
+      - .env
+    networks: 
+      - my-net
+    restart: unless-stopped   
+
+  producer_cron:
+    build: .
+    container_name: 'log_producer_cron'
+    command: python log_producer.py
+    env_file:
+      - .env
+    networks:
+      - my-net
+    restart: unless-stopped
+
+
+  alert_cron:
+    build: .
+    container_name: alert_engine_cron
+    command: python alert_engine.py
+    env_file:
+      - .env
+    networks:
+      - my-net
+    restart: unless-stopped
+
+  cleanup_cron:
+    build: .
+    container_name: "cleanup_logs_cron"
+    command: python cleanup_logs
+    env_file:
+      - .env
+    networks:
+      - my-net
+    restart: unless-stopped
+
+  main-cli:
+    build: .
+    container_name: 'main_app'
+    command: python main.py
+    networks:
+      - my-net
+    depends_on :
+      - fastapi
+      - cron
+    restart: unless-stopped
+
+
+networks:
+  my-net:
