@@ -2,7 +2,7 @@
 from python_API import collection
 from datetime import datetime, timedelta 
 from pymongo.errors import PyMongoError
-from monitoring import upper, upper2, lower, lower2
+from utils import upper, upper2, lower, lower2
 import logging 
 from logger_config import setup_logging
 from dotenv import load_dotenv
@@ -12,12 +12,12 @@ setup_logging()
 
 load_dotenv()
 
-mins = os.getenv('mins')
+days = int(os.getenv('days'))
 
 
 def log_retention():
     try :
-        cutoff_time = datetime.now() - timedelta(minutes=mins)
+        cutoff_time = datetime.now() - timedelta(days=days)
 
         delete = collection.delete_many({
             "timestamp": {"$lte":cutoff_time}}
@@ -37,6 +37,8 @@ def log_retention():
         lower2()
         logging.error(msg)
 
-log_retention()
+def main():
+    log_retention()
 
-
+if __name__ == "__main__":
+    main()

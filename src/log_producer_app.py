@@ -11,7 +11,8 @@ setup_logging()
 
 load_dotenv()
 
-url = os.getenv("LOG_SERVER_URL")
+url = os.getenv("API_URL")
+
 if not url :
     raise ValueError("url is not set.")
 
@@ -37,6 +38,7 @@ MESSAGES = {
 
 def generate_log():
     try :
+        print("🔥 generate_log function CALLED")
         level = random.choice(LEVEL)
         log = {
             "service": random.choice(SERVICE),
@@ -62,3 +64,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

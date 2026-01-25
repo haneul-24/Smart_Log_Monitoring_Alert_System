@@ -1,5 +1,4 @@
 
-# import logging
 
 def upper():
     print("\n"+"*"*80)

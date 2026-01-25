@@ -1,15 +1,20 @@
 from datetime import datetime, timedelta, timezone
 from python_API import collection
-from monitoring import upper, upper2, lower, lower2
+from utils import upper, upper2, lower, lower2
 from pymongo.errors import PyMongoError                                         
 import logging
 from logger_config import setup_logging
-
+import os 
+from dotenv import load_dotenv
 setup_logging()
+
+load_dotenv()
+
+min = int(os.getenv('min'))
 
 def error_logs_alert() :
     now = datetime.now(timezone.utc)
-    one_min_ago = now - timedelta(minutes=1)
+    one_min_ago = now - timedelta(minutes=min)
     try :
         
         result  = list(collection.aggregate([
@@ -92,7 +97,7 @@ def per_service_alert():
         
         result  = list(collection.aggregate([
             {"$match":{
-                "level":"ERROR",
+              "level":"ERROR",
                 "timestamp":{
                     "$gte":one_min_ago,
                     "$lte":now
@@ -168,6 +173,9 @@ def per_service_alert():
         logging.error(msg)
 
 
+def main ():  
+    error_logs_alert()
+    per_service_alert()
 
-error_logs_alert()
-per_service_alert()
+if __name__ == "__main__":
+    main()

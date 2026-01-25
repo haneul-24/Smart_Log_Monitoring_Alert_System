@@ -4,55 +4,62 @@ services:
   fastapi:
     build: .
     container_name: 'smart_log_fastapi'
-    command: uvicorn python_API:app 
+    command: uvicorn python_API:app --host 0.0.0.0 --port 8000
+    ports:
+     - "127.0.0.1:8000:8000"
     env_file:
       - .env
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
     networks: 
       - my-net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 3s 
+      start_period: 7s
+      retries: 5
     restart: unless-stopped   
 
-  producer_cron:
+  producer:
     build: .
-    container_name: 'log_producer_cron'
-    command: python log_producer.py
+    container_name: 'log_producer'
+    environment:
+      API_URL: http://smart_log_fastapi:8000/logs
+      PYTHONDONTWRITEBYTECODE: "1"
+    command: ["python", "-u", "producer_runner.py"]
+    networks:
+      - my-net
+    depends_on:
+      fastapi:
+        condition: service_healthy 
+    restart: no
+
+
+  alert:
+    build: .
+    container_name: logs_alert
     env_file:
       - .env
-    networks:
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+    command: ["python","-u", "alert_runner.py"]
+    networks: 
       - my-net
-    restart: unless-stopped
+    restart: no
 
-
-  alert_cron:
+  cleanup:
     build: .
-    container_name: alert_engine_cron
-    command: python alert_engine.py
+    container_name: "cleanup_logs"
     env_file:
-      - .env
+      - .env 
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+    command: ["python","-u", "cleanup_runner.py"]
     networks:
       - my-net
-    restart: unless-stopped
-
-  cleanup_cron:
-    build: .
-    container_name: "cleanup_logs_cron"
-    command: python cleanup_logs
-    env_file:
-      - .env
-    networks:
-      - my-net
-    restart: unless-stopped
-
-  main-cli:
-    build: .
-    container_name: 'main_app'
-    command: python main.py
-    networks:
-      - my-net
-    depends_on :
-      - fastapi
-      - cron
-    restart: unless-stopped
+    restart: no
 
 
 networks:
-  my-net:
+  my-net:  

@@ -40,6 +40,9 @@ def read_root():
 
     return msg 
 
+@app.get("/health")
+def health():
+    return {"status":"ok"}
 
 @app.post("/logs")
 def create_logs(log:Logs):

@@ -1,5 +1,7 @@
 # Smart Log Monitoring, Alert & Retention System
-A real-time log monitoring and alert system built with FastAPI and MongoDB that tracks service logs, provides error summaries, and sends alerts for critical issues.
+A log monitoring, alerting, and retention system built with FastAPI, MongoDB, and Python, focused on demonstrating how logs are collected, analyzed, and acted upon in backend applications.
+
+The project supports log ingestion via API, interactive CLI-based monitoring, real-time alerts, log summaries, filtering, and automated scheduling using Linux Cron (local) and Python-based schedulers (Docker).
 
 ## About 
 **What does the project do:**
@@ -53,14 +55,19 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 7. User-Friendly Console Interface
 - Clear visual output using upper() and lower() for better readability.
 
-8. API Support (Optional for Integration)
+8. API Support (Integration ready)
 - RESTful endpoints to create, fetch, and delete logs programmatically.
 
-9. Logging System
+9. Centralized Logging System
 - All actions in the monitoring system are logged using Python’s logging module.
 
 10. Time-Based Error Monitoring
 - Detects recent error spikes (e.g., within last 1 minute) for faster incident response.
+
+11. Dual Scheduling Mechanism (Local Cron + Docker Python Loop)
+- **Local Environment**: Uses native Linux cron jobs to automatically run log monitoring, alert detection, log generation, and cleanup tasks at fixed intervals.
+
+- **Docker Environment**: Uses a Python-based scheduler implemented with an infinite loop and controlled sleep intervals to replicate cron-like behavior inside containers, ensuring better control, portability, and reliability without relying on system cron.
 
 ## Tech Stack
 
@@ -94,7 +101,9 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 
 **Scheduling & Automation**
 
-- Cron Jobs (Linux/WSL) – for periodic log monitoring, alerts, and cleanup
+- **Linux Cron** – Efficient OS-level scheduler for local Linux / WSL environments.
+
+- **Python Scheduler (loop + sleep)** – Lightweight, container-friendly mechanism to run periodic tasks inside Docker without relying on system cron, ensuring portability and maintainability.
 
 **Development Environment**
 
@@ -109,18 +118,33 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 
 - GitHub
 
+**Containerization**
+
+- Docker
+
+- Docker compose 
+
 ## Project Structure
 
-**Smart_Log_Monitoring_Alert_System/**
+**Smart_Log_Monitoring_Alert_System/src**
 
 - **alert_engine.py**      ➡️ cron job 
   -  Cron job to detect ERROR spikes (counts errors in last 1 minute and triggers alerts based on log count and per-service analysis) 
 
-- **cleanup_logss.py**     ➡️  cron job  
+- **alert_runner.py**
+  - Python-based scheduler for Docker that periodically executes error spike detection (last 1 minute) using a loop-based timing mechanism.
+
+- **cleanup_logs.py**     ➡️  cron job  
   -  Cron job to automatically delete logs older than 7 days
+
+- **cleanup_runner.py**
+  - Python-based scheduler for Docker that periodically runs log retention cleanup to remove logs older than 7 days. 
 
 - **log_producer_app.py**  ➡️  cron job
   - Sample application to generate logs automatically (used for testing and demonstration)
+
+- **producer_runner.py**
+  - Python-based scheduler for Docker to periodically generate sample logs for testing.
 
 - **logger_config.py**
   - Central logging configuration (stores application logs in app.log)
@@ -139,6 +163,20 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 
 - **requirements.txt**
   - List of required Python packages
+
+**Smart_Log_Monitoring_Alert_System/**
+
+- **.gitignore**
+  - Ignore unnecessary files (venv, __pycache__, logs, secrets)
+
+- **Dockerfile**
+  - set up for the image 
+
+- **docker-compose.yml**
+  - managing multiple containers in the same network 
+
+- **.dockerignore**
+  - Exclude files from Docker build context
 
 **Run main file using the command:**
 
@@ -178,7 +216,7 @@ All logs will be stored in:
 
 ### 6. Start the FastAPI Server
 
-```uvicorn main:app --reload```
+```uvicorn python_API:app --reload```
 
 ### 7. Test API Endpoints
 Open browser or Postman:
@@ -204,34 +242,46 @@ Cron jobs can be configured to:
 - Trigger alert checks automatically
 - Manage log retention and cleanup
 
+> Note: In Docker environments, cron is replaced with a Python-based scheduler (loop + sleep) to ensure container-friendly execution.
+
+### 9. Run with Docker(optional / Advanced way)
+
+**Build Docker images:**
+
+```docker-compose build```
+
+**Start Containers**
+
+```docker-compose up```
+
 ## Usage
-- Generate logs from multiple services
+- Generate logs from multiple services and applications
 
-- Store logs in MongoDB via FastAPI
+- Store logs in MongoDB through FastAPI APIs
 
-- View all logs or only ERROR logs
+- View all logs or filter only ERROR-level logs
 
-- Monitor logs using CLI tool
+- Monitor logs using a command-line (CLI) interface
 
-- Filter logs by service and level
+- Filter logs based on service name and log level
 
-- Generate alerts for frequent errors
+- Generate alerts when errors occur frequently
 
-- Automatically clean old logs
+- Automatically clean and retain logs based on time limits
 
 ## Real World Applications 
 
-- Monitoring microservices in production environments
+- Monitoring microservices and backend systems in production
 
-- Detecting failures in payment, authentication, or order systems  
+- Detecting failures in critical services like payment, authentication, and order processing
 
-- Supporting DevOps and SRE teams with error alerts  
+- Providing timely error alerts for operational monitoring
 
-- Log analysis for debugging and root-cause analysis 
+- Assisting in debugging and root-cause analysis using structured logs
 
-- CI/CD pipeline monitoring and validation  
+- Validating application behavior during CI/CD deployments
 
-- Maintaining application health and reducing downtime  
+- Maintaining system reliability and reducing downtime through proactive monitoring 
 
 
 ## License
