@@ -292,3 +292,5 @@ This project is licensed under the **MIT License**.
 
 ## Author 
 **Sejal**
+
+Aspiring Cloud / Backend Engineer passionate about building real-world monitoring and automation systems.
