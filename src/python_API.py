@@ -156,3 +156,66 @@ def delete_logs(log_id:str):
         )
     
 
+@app.get("/logs/summary")
+def log_summary():
+    try:
+        result = list(collection.find())
+        total_logs = 0
+        info = warning = error = 0
+        service_errors = {}
+        for doc in result:
+            total_logs += 1
+
+            if doc["level"] == "INFO":
+                info += 1
+            
+            elif doc["level"] == "ERROR":
+                error += 1
+            
+            elif doc["level"] == "WARNING":
+                warning += 1
+
+            service = doc['service']
+            service_errors[service]  = service_errors.get(service, 0)+1
+        return{
+            "total_logs":total_logs,
+            "info logs" : info,
+            "warning_logs" : warning,
+            "error_logs" : error,
+            "service_errors" : service_errors
+        }
+
+    except PyMongoError as e:
+        logging.error(f'{e}')
+        raise HTTPException(
+            status_code=500,
+            detail=f'{e}'
+        )
+
+@app.get("/filter/logs")
+def filter_logs(service_name : str = None, level_name : str = None):
+    try:
+        result = list(collection.find())
+        filtered_logs = []
+
+        for doc in result:
+                if service_name and service_name != doc["service"]:
+                    continue
+                if level_name and level_name != doc["level"]:
+                    continue 
+                
+                
+                filtered_logs.append({
+                    "Service": doc["service"],
+                    "Level": doc["level"],
+                    "Message": doc["message"],
+                    "Timestamp":doc["timestamp"]
+                })
+
+        return filtered_logs
+    except PyMongoError as e :
+        logging.info(f'{e}')
+        raise HTTPException(
+            status_code=500,
+            detail=(f'{e}')
+        )
