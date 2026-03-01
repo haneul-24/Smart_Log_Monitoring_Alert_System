@@ -8,7 +8,7 @@ from pymongo.errors import PyMongoError
 from bson import ObjectId
 import certifi
 import logging
-from logger_config import setup_logging
+from src.logger_config import setup_logging
 
 
 setup_logging()
@@ -219,3 +219,5 @@ def filter_logs(service_name : str = None, level_name : str = None):
             status_code=500,
             detail=(f'{e}')
         )
+
+        
