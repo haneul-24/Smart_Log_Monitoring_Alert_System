@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ /myapp/
 
-COPY tests/ /myapp/tests/
+COPY tests/ /myapp/
 
 RUN mkdir -p target/surefire-reports
 
