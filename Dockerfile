@@ -12,6 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ /myapp/
 
+COPY tests/ /myapp/tests/
+
 RUN mkdir -p target/surefire-reports
 
 CMD ["pytest", "--junitxml=myapp/target/surefire-reports/results.xml"]
