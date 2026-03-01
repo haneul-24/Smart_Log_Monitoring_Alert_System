@@ -10,9 +10,11 @@ COPY requirements.txt .
 RUN pip install --upgrade pip 
 RUN pip install --no-cache-dir -r requirements.txt 
 
-COPY src/ /myapp/
+COPY src/ /myapp/src/
 
 COPY tests/ /myapp/tests/
+
+ENV PYTHONPATH=/myapp
 
 RUN mkdir -p target/surefire-reports
 
