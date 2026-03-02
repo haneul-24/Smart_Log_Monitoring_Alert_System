@@ -68,9 +68,9 @@ services:
   command: pytest --junitxml=/myapp/target/results.xml
   networks:
     - my-net
-  depends on:
-    - fastapi:
-      - condition: service-started
+  depends_on:
+    fastapi:
+      condition: service-started
 
 networks:
   my-net:  
