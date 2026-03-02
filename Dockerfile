@@ -18,7 +18,7 @@ ENV PYTHONPATH=/myapp
 
 RUN mkdir -p target/surefire-reports
 
-CMD ["pytest", "--junitxml=myapp/target/surefire-reports/results.xml"]
+# CMD ["pytest", "--junitxml=myapp/target/surefire-reports/results.xml"]
 
 
 
