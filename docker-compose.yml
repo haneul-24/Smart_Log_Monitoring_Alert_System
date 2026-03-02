@@ -61,7 +61,7 @@ services:
     restart: no
 
   test:
-  build .
+  build: .
   container_name: "Test API"
   volumes: 
     - ./target:/myapp/target
