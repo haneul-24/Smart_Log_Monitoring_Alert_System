@@ -60,6 +60,17 @@ services:
       - my-net
     restart: no
 
+  test:
+  build .
+  container_name: "Test API"
+  volumes: 
+    - ./target:/myapp/target
+  command: pytest --junitxml=/myapp/target/results.xml
+  networks:
+    - my-net
+  depends on:
+    - fastapi:
+      - condition: service-started
 
 networks:
   my-net:  
