@@ -70,7 +70,7 @@ services:
       - my-net
     depends_on:
       fastapi:
-        condition: service-started
+        condition: service_started
 
 networks:
   my-net:  
