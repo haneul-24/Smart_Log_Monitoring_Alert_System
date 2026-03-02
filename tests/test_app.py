@@ -1,9 +1,9 @@
 import pytest 
-from fastapi import testclient
+from fastapi.testclient import TestClient
 from src.python_API import app
 
 
-client = testclient(app)
+client = TestClient(app)
 
 def test_root_endpoint():
     response = client.get("/")
