@@ -20,7 +20,7 @@ def test_create_and_delete_log():
     log_data = {
         "service": "Order-service",
         "level": "info",
-        "meassage": "This is a test log"
+        "message": "This is a test log"
     }
 
     create_response = client.post("/logs", json=log_data)
