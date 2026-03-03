@@ -62,7 +62,7 @@ services:
 
   test:
     build: .
-    container_name: "Test API"
+    container_name: "test_api"
     volumes: 
       - ./target:/myapp/target
     command: pytest --junitxml=/myapp/target/results.xml
