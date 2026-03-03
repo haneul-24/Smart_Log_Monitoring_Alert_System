@@ -1,9 +1,6 @@
-import pytest 
+
 from fastapi.testclient import TestClient
 from src.python_API import app
-
-import os
-print("MONGO_URL:", os.getenv("MONGO_URL"))
 
 client = TestClient(app)
 
