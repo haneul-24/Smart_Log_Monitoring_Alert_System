@@ -25,7 +25,7 @@ services:
     build: .
     container_name: 'log_producer'
     environment:
-      API_URL: http://smart_log_fastapi:8000/logs
+      API_URL: http://fastapi:8000/logs
       PYTHONDONTWRITEBYTECODE: "1"
     command: ["python", "-u", "src/producer_runner.py"]
     networks:
