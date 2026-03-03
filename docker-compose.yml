@@ -63,6 +63,8 @@ services:
   test:
     build: .
     container_name: "test_api"
+    env_file:
+     - .env
     volumes: 
       - ./target:/myapp/target
     command: pytest --junitxml=/myapp/target/results.xml
@@ -70,7 +72,7 @@ services:
       - my-net
     depends_on:
       fastapi:
-        condition: service_started
+        condition: service_started 
     restart: "no"
 
 networks:
