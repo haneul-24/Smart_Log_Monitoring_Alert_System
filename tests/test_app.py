@@ -30,6 +30,6 @@ def test_create_and_delete_log():
 
     delete_reponse = client.delete(f"/logs/{log_id}")
     assert delete_reponse.status_code == 200
-    assert delete_reponse.json()["message"] == "Deleted Successfully.."
+    assert delete_reponse.json()["message"] == "Deleted successfully.."
 
 
