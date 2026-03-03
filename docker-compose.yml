@@ -4,7 +4,7 @@ services:
   fastapi:
     build: .
     container_name: 'smart_log_fastapi'
-    command: uvicorn python_API:app --host 0.0.0.0 --port 8000
+    command: uvicorn src.python_API:app --host 0.0.0.0 --port 8000
     ports:
      - "127.0.0.1:8000:8000"
     env_file:
@@ -27,7 +27,7 @@ services:
     environment:
       API_URL: http://smart_log_fastapi:8000/logs
       PYTHONDONTWRITEBYTECODE: "1"
-    command: ["python", "-u", "producer_runner.py"]
+    command: ["python", "-u", "src/producer_runner.py"]
     networks:
       - my-net
     depends_on:
@@ -43,7 +43,7 @@ services:
       - .env
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
-    command: ["python","-u", "alert_runner.py"]
+    command: ["python","-u", "src/alert_runner.py"]
     networks: 
       - my-net
     restart: no
@@ -55,7 +55,7 @@ services:
       - .env 
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
-    command: ["python","-u", "cleanup_runner.py"]
+    command: ["python","-u", "src/cleanup_runner.py"]
     networks:
       - my-net
     restart: no
@@ -70,7 +70,8 @@ services:
       - my-net
     depends_on:
       fastapi:
-        condition: service_started
+        condition: service_healthy
+    restart: "no"
 
 networks:
   my-net:  
