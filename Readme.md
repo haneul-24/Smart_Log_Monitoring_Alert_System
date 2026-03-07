@@ -1,7 +1,22 @@
 # Smart Log Monitoring, Alert & Retention System
-A log monitoring, alerting, and retention system built with FastAPI, MongoDB, and Python, focused on demonstrating how logs are collected, analyzed, and acted upon in backend applications.
+<p align="center">
+  <img src="image.png" width="700">
+</p>
+A DevOps-oriented log monitoring, alerting, and retention system built with FastAPI, MongoDB, and Python, focused on demonstrating how logs are collected, analyzed, and acted upon in backend applications.
 
 The project supports log ingestion via API, interactive CLI-based monitoring, real-time alerts, log summaries, filtering, and automated scheduling using Linux Cron (local) and Python-based schedulers (Docker).
+
+## Table of Contents
+
+- [About](#about)
+- [Features](#features-of-the-project)
+- [Tech Stack](#tech-stack)
+- [Key Highlights](#key-highlights)
+- [CI/CD Pipeline](#cicd-pipeline-jenkins)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Real World Applications](#real-world-applications)
 
 ## About 
 **What does the project do:**
@@ -71,6 +86,12 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 
 ## Tech Stack
 
+**CI/CD Automation**
+
+- Jenkins – CI/CD pipeline automation
+- Docker Hub – Container image registry
+- SSH Deployment – Automated deployment to remote server
+
 **Programming Language**
 
 - Python 3.12.3
@@ -118,11 +139,50 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 
 - GitHub
 
-**Containerization**
+**Containerization & Deployment**
 
-- Docker
+- Docker – Containerization of application services
+- Docker Compose – Multi-container orchestration
+- Docker Hub – Image registry for storing built images
 
-- Docker compose 
+## Key Highlights
+
+- Real-time log monitoring system
+- Automated log retention and cleanup
+- Containerized architecture using Docker
+- CI/CD pipeline automation using Jenkins
+- Production-style deployment using SSH
+- MongoDB-based persistent log storage
+
+## CI/CD Pipeline (Jenkins)
+
+This project implements a complete CI/CD pipeline using Jenkins, enabling automated build, testing, containerization, and deployment.
+
+### Pipeline Workflow
+**1. Source Code Checkout**
+- Jenkins pulls the latest code from the GitHub repository.
+
+**2. Docker Image Build**
+- Jenkins builds a Docker image of the application.
+
+**3. Automated Testing**
+- Containers are started using Docker Compose.
+- API tests are executed automatically.
+
+**4. Manual Approval – Docker Push**
+- A manual approval step ensures controlled image publishing.
+
+**5. Push to Docker Hub**
+- The built image is pushed to Docker Hub registry.
+
+**6. Manual Approval – Deployment**
+- Deployment to production requires manual confirmation.
+
+**7. Production Deployment**
+- Jenkins connects to a remote server via SSH.
+- The latest image is pulled from Docker Hub.
+- Existing containers are stopped and replaced with updated containers.
+
 
 ## Project Structure
 
@@ -178,7 +238,7 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 - **.dockerignore**
   - Exclude files from Docker build context
 
-**Run main file using the command:**
+**Run the CLI application:**
 
 ```python main.py```
 
@@ -204,7 +264,7 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 ### 3. Install dependencies:
 ```pip install -r requirements.txt```
 
-### 4.Configure enviroments variables:
+### 4. Configure Environment Variables:
 Create a ```.env``` file in the project root
 
 ### 5. Setup logging:
@@ -244,15 +304,69 @@ Cron jobs can be configured to:
 
 > Note: In Docker environments, cron is replaced with a Python-based scheduler (loop + sleep) to ensure container-friendly execution.
 
-### 9. Run with Docker(optional / Advanced way)
+### 9. Run with Docker (Optional / Advanced)
 
 **Build Docker images:**
 
-```docker-compose build```
+```docker compose build```
 
 **Start Containers**
 
-```docker-compose up```
+```docker compose up```
+
+## Automated Deployment
+
+- Deployment is handled automatically through the Jenkins pipeline.
+
+**Deployment Process**
+
+- Jenkins securely connects to the production server using SSH keys.
+
+- The latest Docker image is pulled from Docker Hub.
+
+- Existing containers are stopped and removed.
+
+- Docker Compose redeploys the updated application containers.
+
+This ensures:
+
+- Zero manual deployment steps
+
+- Faster updates
+
+- Consistent production environments
+
+- Reduced human error
+
+## CI/CD Pipeline Architecture
+
+```
+GitHub Repository
+        │
+        ▼
+      Jenkins
+        │
+        ▼
+ Docker Image Build
+        │
+        ▼
+ Automated Tests (Docker Compose)
+        │
+        ▼
+ Manual Approval
+        │
+        ▼
+ Push to Docker Hub
+        │
+        ▼
+ Manual Approval
+        │
+        ▼
+ Remote Server Deployment (SSH)
+        │
+        ▼
+ Docker Compose Production Run
+```
 
 ## Usage
 - Generate logs from multiple services and applications
@@ -269,6 +383,7 @@ Cron jobs can be configured to:
 
 - Automatically clean and retain logs based on time limits
 
+ 
 ## Real World Applications 
 
 - Monitoring microservices and backend systems in production
@@ -283,6 +398,8 @@ Cron jobs can be configured to:
 
 - Maintaining system reliability and reducing downtime through proactive monitoring 
 
+- Demonstrating a real-world CI/CD pipeline with Jenkins, Docker, and automated deployments
+
 
 ## License
 This project is licensed under the **MIT License**.
@@ -293,4 +410,4 @@ This project is licensed under the **MIT License**.
 ## Author 
 **Sejal**
 
-Aspiring Cloud / Backend Engineer passionate about building real-world monitoring and automation systems.
+DevOps Project – Built for learning and demonstrating log monitoring and CI/CD workflows.
