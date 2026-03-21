@@ -15,6 +15,7 @@ The project supports log ingestion via API, interactive CLI-based monitoring, re
 - [CI/CD Pipeline](#cicd-pipeline-jenkins)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
+- [Automated Deployment](#automated-deployment)
 - [Usage](#usage)
 - [Real World Applications](#real-world-applications)
 
@@ -144,6 +145,8 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 - Docker – Containerization of application services
 - Docker Compose – Multi-container orchestration
 - Docker Hub – Image registry for storing built images
+- Operating System / Infrastructure: Rocky Linux 9 (RHEL-based VM) — Chosen for enterprise-grade stability and production-ready environment.
+- Remote Access: SSH (Secure Shell) — For automated, secure communication between Jenkins and the production server.
 
 ## Key Highlights
 
@@ -153,6 +156,7 @@ Manual log checking is tedious and error-prone. Applications can fail silently o
 - CI/CD pipeline automation using Jenkins
 - Production-style deployment using SSH
 - MongoDB-based persistent log storage
+- Production-Style Deployment: Automated CD (Continuous Deployment) to a remote Rocky Linux VM using Jenkins and SSH, simulating a real-world enterprise infrastructure.
 
 ## CI/CD Pipeline (Jenkins)
 
@@ -182,7 +186,7 @@ This project implements a complete CI/CD pipeline using Jenkins, enabling automa
 - Jenkins connects to a remote server via SSH.
 - The latest image is pulled from Docker Hub.
 - Existing containers are stopped and replaced with updated containers.
-
+- Jenkins connects to a Remote Rocky Linux Server via SSH.
 
 ## Project Structure
 
@@ -316,23 +320,23 @@ Cron jobs can be configured to:
 
 ## Automated Deployment
 
-- Deployment is handled automatically through the Jenkins pipeline.
+- Deployment is handled automatically through the Jenkins pipeline to a remote Rocky Linux VM.
 
 **Deployment Process**
 
-- Jenkins securely connects to the production server using SSH keys.
+- Jenkins securely connects to the Rocky Linux VM using SSH keys.
 
-- The latest Docker image is pulled from Docker Hub.
+- The latest Docker image is pulled from Docker Hub onto the Rocky Linux host.
 
-- Existing containers are stopped and removed.
+- Existing containers are stopped and removed VM.
 
-- Docker Compose redeploys the updated application containers.
+- Docker Compose redeploys the updated application containers on Rocky Linux VM.
 
 This ensures:
 
 - Zero manual deployment steps
 
-- Faster updates
+- Faster updates on a production-grade OS
 
 - Consistent production environments
 
