@@ -328,19 +328,19 @@ Cron jobs can be configured to:
 
 - The latest Docker image is pulled from Docker Hub onto the Rocky Linux host.
 
-- Existing containers are stopped and removed VM.
+- Existing containers are stopped and removed from the VM.
 
 - Docker Compose redeploys the updated application containers on Rocky Linux VM.
 
-This ensures:
+**This ensures:**
 
-- Zero manual deployment steps
+- **Zero manual deployment steps:** Fully automated CD (Continuous Deployment) workflow
 
-- Faster updates on a production-grade OS
+- **Faster updates on a production-grade VM:** Rapid delivery of code changes to the Rocky Linux VM.
 
-- Consistent production environments
+- **Consistent production environments:** Stable setup using Rocky Linux and Docker containers.
 
-- Reduced human error
+- **Reduced human error:** Eliminates risks associated with manual configuration on the VM.
 
 ## CI/CD Pipeline Architecture
 
